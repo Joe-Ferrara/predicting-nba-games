@@ -4,3 +4,5 @@ regular_season_players_running_aves_tots_corrected.nc filter=lfs diff=lfs merge=
 regular_season_players_running_aves_tots_corrected.csv filter=lfs diff=lfs merge=lfs -text
 full_stats_running.csv filter=lfs diff=lfs merge=lfs -text
 full_stats_running.nc filter=lfs diff=lfs merge=lfs -text
+regular_season_players_running.nc filter=lfs diff=lfs merge=lfs -text
+regular_season_players_running.csv filter=lfs diff=lfs merge=lfs -text
