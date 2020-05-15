@@ -1,5 +1,7 @@
 import pandas as pd
 
+# load odds
+
 odds_csvs = []
 for i in range(7, 20):
     if i < 9:
@@ -11,6 +13,10 @@ for i in range(7, 20):
     file_name = 'nba_odds_' + year + '.csv'
     year = year[0:4]
     odds_csvs.append([year, pd.read_csv(file_name)])
+
+####################################
+# put team abbreviations into odds #
+####################################
 
 print('doing abbreviations')
 team_to_abb = {}
@@ -32,6 +38,11 @@ with open('team_to_abbreviation.txt', 'r') as f:
 team_to_abb['Oklahoma City'] = 'OKC'
 team_to_abb['LA Clippers'] = 'LAC'
 
+######################################################
+# make dictionary with start and end dates of season #
+# enables removing of preseason and postseason games #
+######################################################
+
 # doing start and end dates
 start_date = {}
 end_date = {}
@@ -46,6 +57,10 @@ with open('season_start_end_dates.txt', 'r') as f:
         start_date[season] = start
         end_date[season] = end
         f.read(1) # read end of line
+
+#################################
+# functions to make new columns #
+#################################
 
 def predict_scores(odds, index):
     if odds['ML'].iloc[index] == 'NL': # happens once, index 2184 year 2007
@@ -127,9 +142,13 @@ def make_score(odds, index):
 
     return h_score, a_score
 
+#######################
+# make new dataframes #
+#######################
+
 # columns of new dataframe
 cols = ['DATE', 'HOME_TEAM', 'AWAY_TEAM', 'HOME_PTS', 'AWAY_PTS', 'HOME_TEAM_WINS', 'PRED_HOME_TEAM_WINS', 'PRED_HOME_PTS', 'PRED_AWAY_PTS', 'PRED_HOME_WIN_PROB', 'PRED_AWAY_WIN_PROB', 'MARGIN', 'OLD_INDEX']
-
+# prediction columns
 pred_cols = ['PRED_HOME_TEAM_WINS', 'PRED_HOME_PTS', 'PRED_AWAY_PTS']
 pred_cols += ['PRED_HOME_WIN_PROB', 'PRED_AWAY_WIN_PROB', 'MARGIN']
 
@@ -151,6 +170,7 @@ for pair in odds_csvs:
             new_odds['DATE'].append(new_date)
             new_odds['OLD_INDEX'].append(odds.index[index])
         else:
+            # do not record pre and post season games
             continue
         # teams
         h_team, a_team = make_teams(odds, index, team_to_abb)
@@ -171,4 +191,5 @@ for pair in odds_csvs:
         for i in range(len(predictions)):
             new_odds[pred_cols[i]].append(predictions[i])
     new_odds = pd.DataFrame(new_odds)
+    # save
     new_odds.to_csv('odds_' + year + '.csv')

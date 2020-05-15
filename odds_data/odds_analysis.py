@@ -1,5 +1,9 @@
 import pandas as pd
 
+###############################################
+# load and put all seasons into one dataframe #
+###############################################
+
 odds_csvs = []
 
 for i in range(7, 20):
@@ -13,12 +17,18 @@ for i in range(7, 20):
 odds = pd.concat(odds_csvs, axis=0)
 odds.reset_index(drop=True, inplace=True)
 
+####################################
+# make a dataframe to record error #
+####################################
+
+# columns for new datafram
 new_cols = {}
 new_cols_names = ['PRED_WIN_CORRECT', 'HOME_SCORE_ERROR', 'AWAY_SCORE_ERROR', 'SPREAD_ERROR', 'OVER_UNDER_ERROR']
 for name in new_cols_names:
     new_cols[name] = [0.0]*odds.shape[0]
 new_cols['PRED_WIN_CORRECT'] = [0]*odds.shape[0]
 
+# utility functions
 def pred_win_error(i, odds, col):
     pred = odds['PRED_HOME_TEAM_WINS'].iloc[i]
     if pred == 0.5:
@@ -49,14 +59,19 @@ def over_under_error(i, odds, col):
     error = abs(pred_ov_un - actual_ov_un)
     col[i] = error
 
+# record the errors
 for i in range(odds.shape[0]):
     pred_win_error(i, odds, new_cols['PRED_WIN_CORRECT'])
     h_score_error(i, odds, new_cols['HOME_SCORE_ERROR'])
     a_score_error(i, odds, new_cols['AWAY_SCORE_ERROR'])
     spread_error(i, odds, new_cols['SPREAD_ERROR'])
     over_under_error(i, odds, new_cols['OVER_UNDER_ERROR'])
-
+# make dataframe
 analysis = pd.DataFrame(new_cols)
+
+######################################
+# do analysis of the recorded errors #
+######################################
 
 def within(col, x):
     """Returns percentage of col that is less than or equal to x."""
