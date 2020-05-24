@@ -2,7 +2,7 @@ import pandas as pd
 
 # preprocessing
 
-print('pre-preocessing')
+print('pre-processing')
 
 exec(open('pre_processing.py').read())
 
@@ -34,7 +34,6 @@ def run_test(model, train_data, val_data, test_data):
         y_v_hat = model.predict(X_v)
         val_perc.append(perc_corr(y_v, y_v_hat))
         X_test, y_test = test_data[i][0], test_data[i][1]
-        model.fit(X_test, y_test)
         y_test_hat = model.predict(X_test)
         test_perc.append(perc_corr(y_test, y_test_hat))
     return train_perc, val_perc, test_perc
