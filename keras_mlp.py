@@ -59,7 +59,13 @@ def run_model(train_data, val_data, e, r, d):
         X_t, y_t = train_data[i][0], train_data[i][1]
         X_v, y_v = val_data[i][0], val_data[i][1]
         model.fit(X_t, y_t, epochs=e, validation_data=(X_v,y_v))
-        y_test_hat =
+        y_t_hat = model.predict(X_t)
+        y_t_hat = y_t_hat.round()
+        train_perc.append(perc_corr(y_t, y_t_hat))
+        y_v_hat = model.predict(X_v)
+        y_v_hat = y_v_hat.round()
+        val_perc.append(perc_corr(y_v, y_v_hat))
+    return train_perc, val_perc
 
 import tensorflow as tf
 from tensorflow import keras
