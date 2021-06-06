@@ -3,3 +3,6 @@
 ./full_stats_running.csv
 ./players_running.csv
 ./games_details.csv
+
+# cleaning repository
+remove_large_files
