@@ -1,11 +1,8 @@
 # ignore data
-./regular_season_players_running.csv
-./full_stats_running.csv
-./players_running.csv
-./games_details.csv
-
-# cleaning repository
-remove_large_files
+regular_season_players_running.csv
+full_stats_running.csv
+players_running.csv
+games_details.csv
 regular_season_teams_running.csv
 teams_running.csv
 ranking.csv
@@ -17,3 +14,6 @@ regular_season_teams_ending.csv
 teams_totals.csv
 players.csv
 teams.csv
+
+# cleaning repository
+remove_large_files
